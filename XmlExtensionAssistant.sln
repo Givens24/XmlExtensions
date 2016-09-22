@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlExtensionAssistant", "XmlExtensionAssistant\XmlExtensionAssistant.csproj", "{15AF427A-D785-460A-8A66-200956063038}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3BC1DC91-A270-4744-86A3-B0D18F280670}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlHelper.Tests", "XmlHelper.Tests\XmlHelper.Tests.csproj", "{431FFF34-E8BE-456B-935B-1586DCD01BFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15AF427A-D785-460A-8A66-200956063038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15AF427A-D785-460A-8A66-200956063038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15AF427A-D785-460A-8A66-200956063038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15AF427A-D785-460A-8A66-200956063038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431FFF34-E8BE-456B-935B-1586DCD01BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431FFF34-E8BE-456B-935B-1586DCD01BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431FFF34-E8BE-456B-935B-1586DCD01BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431FFF34-E8BE-456B-935B-1586DCD01BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{431FFF34-E8BE-456B-935B-1586DCD01BFC} = {3BC1DC91-A270-4744-86A3-B0D18F280670}
+	EndGlobalSection
+EndGlobal
