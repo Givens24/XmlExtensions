@@ -54,3 +54,19 @@ xmlDoc.LoadXml(xmlRequestInput);
 
 var allXmlNodesFlattened = xmlDoc.Flatten();
 ```
+
+## AlphabetizeElementChildren
+* AlphabetizeElementChildren alphabetizes all the child elements inside of a particular element. The **whereExpression** parameter determines what element(s) children you want alphabetized.
+```C#
+var xml = "<shelf>" +
+"<book><title>Test Book 1</title><author>Judy Blume</author><copyright>2016</copyright></book>" +
+"<book><title>Test Book 2</title><copyright>2002</copyright><author>John Doe</author></book>" +
+"<book><copyright>2014</copyright><title>Test Book 3</title><author>Tom Clancy</author></book>" +
+"</shelf>";
+
+var xmlDocument = new XmlDocument();
+xmlDocument.LoadXml(xml);
+
+xmlDocument.AlphabetizeElementChildren(x => x.Name.Equals("book"));
+var bookNumberOne = xmlDocument.FindElements(x => x.Name.Equals("book")).FirstOrDefault();
+```
