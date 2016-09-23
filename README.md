@@ -68,5 +68,4 @@ var xmlDocument = new XmlDocument();
 xmlDocument.LoadXml(xml);
 
 xmlDocument.AlphabetizeElementChildren(x => x.Name.Equals("book"));
-var bookNumberOne = xmlDocument.FindElements(x => x.Name.Equals("book")).FirstOrDefault();
 ```
