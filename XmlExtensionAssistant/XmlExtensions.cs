@@ -81,5 +81,26 @@ namespace XmlExtensionAssistant
 
             return flattenedXml;
         }
+
+        /// <summary>
+        /// Alphabetizes an XMl element's children
+        /// </summary>
+        /// <param name="xmlDocument">The XML document to reorganize</param>
+        /// <param name="whereExpression">The where clause to find the element(s) that need alphabetizing</param>
+        public static void AlphabetizeElementChildren(this XmlDocument xmlDocument, Func<XmlNode, bool> whereExpression)
+        {
+            var elementsToAlphabetize = xmlDocument.FindElements(whereExpression);
+            elementsToAlphabetize.ToList().ForEach(x =>
+            {
+                if (!x.HasChildNodes)
+                {
+                    return;
+                }
+
+                var orderedChildNodes = x.ChildNodes.Cast<XmlNode>().ToList().OrderBy(node => node.Name);
+                x.ChildNodes.Cast<XmlNode>().ToList().ForEach(child => x.RemoveChild(child));
+                orderedChildNodes.ToList().ForEach(newChild => x.AppendChild(newChild));
+            });
+        }
     }
 }

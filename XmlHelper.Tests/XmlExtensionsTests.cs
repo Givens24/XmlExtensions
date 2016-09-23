@@ -115,5 +115,62 @@ namespace XmlHelper.Tests
 
             Assert.IsFalse(foundElements.Any());
         }
+
+        [TestMethod]
+        public void AlphabetizeNodeChildren_Successfully_Reorder_Child_Nodes()
+        {
+            var xml = "<shelf>" +
+                "<book><title>Test Book 1</title><author>Judy Blume</author><copyright>2016</copyright></book>" +
+                "<book><title>Test Book 2</title><copyright>2002</copyright><author>John Doe</author></book>" +
+                "<book><copyright>2014</copyright><title>Test Book 3</title><author>Tom Clancy</author></book>" +
+                "</shelf>";
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xml);
+
+            xmlDocument.AlphabetizeElementChildren(x => x.Name.Equals("book"));
+            var bookNumberOne = xmlDocument.FindElements(x => x.Name.Equals("book")).FirstOrDefault();
+
+            var bookAlphabetizedSuccessfully = false;
+            if (bookNumberOne != null && bookNumberOne.HasChildNodes)
+            {
+                bookAlphabetizedSuccessfully = BookIsAlphabetizedCorrectly(bookNumberOne, bookAlphabetizedSuccessfully);
+            }
+            Assert.IsTrue(bookAlphabetizedSuccessfully);
+        }
+
+        private bool BookIsAlphabetizedCorrectly(XmlNode bookNumberOne, bool bookAlphabetizedSuccessfully)
+        {
+            var childCount = 1;
+            bookNumberOne.TraverseXml(x =>
+            {
+                if (x.NodeType == XmlNodeType.Text)
+                {
+                    return;
+                }
+
+                if (childCount == 1)
+                {
+                    bookAlphabetizedSuccessfully = x.Name.Equals("author");
+                    childCount = 2;
+
+                    return;
+                }
+
+                if (childCount == 2)
+                {
+                    bookAlphabetizedSuccessfully = x.Name.Equals("copyright");
+                    childCount = 3;
+
+                    return;
+                }
+
+                if (childCount == 3)
+                {
+                    bookAlphabetizedSuccessfully = x.Name.Equals("title");
+                }
+            });
+            return bookAlphabetizedSuccessfully;
+        }
     }
 }
