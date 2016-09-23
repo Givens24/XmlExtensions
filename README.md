@@ -2,7 +2,7 @@
 
 # Setup and Usage for XmlExtensions
 * All you need to do in order to use the extensions is reference the **XmlExtensionAssistant** dll (which you can download through nuget) and create an instance of an XmlDocument to extend on. The only method that does not extend on the Xmldocument object is **"TraverseXml"**. This method is an extension for **XmlNode**.
-* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"** and **"Flatten"**
+* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"**, **"Flatten"** and **"AlphabetizeElementChildren"**.
 * The following examples bellow will demonstrate how to call each of the four methods above.
 
 ## TraverseXml
