@@ -90,6 +90,33 @@ namespace XmlExtensionAssistant
         }
 
         /// <summary>
+        /// Removes all elements based on the specified where clause
+        /// </summary>
+        /// <param name="xmlDocument">Xml document to search</param>
+        /// <param name="whereExpression">Where expressions to removes nodes</param>
+        public static void RemoveElements(this XmlDocument xmlDocument, Func<XmlNode, bool> whereExpression)
+        {
+            var elementsToRemove = xmlDocument.FindElements(whereExpression);
+            if (!elementsToRemove.Any())
+            {
+                return;
+            }
+
+            xmlDocument.TraverseXml(x =>
+            {
+                foreach(XmlNode node in elementsToRemove)
+                {
+                    if(x != node)
+                    {
+                        continue;
+                    }
+
+                    x.ParentNode.RemoveChild(x);
+                }
+            });
+        }
+
+        /// <summary>
         /// Flattens an XML document into a collection of nodes
         /// </summary>
         /// <param name="xmlDocument">XML document to flatten</param>

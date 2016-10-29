@@ -89,7 +89,7 @@ namespace XmlHelper.Tests
         }
 
         [TestMethod]
-        public void FindElementsByAttributeValue_Elements_Returned_By_Attribute_Where_Clause()
+        public void FindElementsByAttributes_Elements_Returned_By_Attribute_Where_Clause()
         {
             var xmlRequestInput =
                 "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\"><city>Plymouth</city><country>!*)</country></stop>" +
@@ -103,7 +103,7 @@ namespace XmlHelper.Tests
         }
 
         [TestMethod]
-        public void FindElementsByAttributeValue_No_Elements_Returned_By_Attribute_Where_Clause()
+        public void FindElementsByAttributes_No_Elements_Returned_By_Attribute_Where_Clause()
         {
             var xmlRequestInput =
                 "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\"><city>Plymouth</city><country>!*)</country></stop>" +
@@ -114,6 +114,20 @@ namespace XmlHelper.Tests
             var elementsFound = xmlDoc.FindElementsByAttributes(x => x.Name.ToLower().Equals("stopid") && x.InnerText.Equals("3"));
 
             Assert.IsFalse(elementsFound.Any());
+        }
+
+        [TestMethod]
+        public void RemoveElements_Elements_Remove_Based_On_Specific_Where_Clause()
+        {
+            var xmlRequestInput =
+                "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\"><city>Plymouth</city><country>!*)</country></stop>" +
+                "</route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city></stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlRequestInput);
+
+            xmlDoc.RemoveElements(x => x.Name.ToLower().Equals("city") && x.InnerText.ToLower().Equals("plymouth"));
+
+            Assert.IsFalse(xmlDoc.FindElements(x => x.Name.ToLower().Equals("city") && x.InnerText.ToLower().Equals("plymouth")).Any());
         }
 
         [TestMethod]
