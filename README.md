@@ -2,7 +2,7 @@
 
 # Setup and Usage for XmlExtensions
 * All you need to do in order to use the extensions is reference the **XmlExtensionAssistant** dll (which you can download through nuget) and create an instance of an XmlDocument to extend on. The only method that does not extend on the Xmldocument object is **"TraverseXml"**. This method is an extension for **XmlNode**.
-* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"** and **"Flatten"**
+* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"**, **"Flatten"** and **"AlphabetizeElementChildren"**.
 * The following examples bellow will demonstrate how to call each of the four methods above.
 
 ## TraverseXml
@@ -53,4 +53,19 @@ var xmlDoc = new XmlDocument();
 xmlDoc.LoadXml(xmlRequestInput);
 
 var allXmlNodesFlattened = xmlDoc.Flatten();
+```
+
+## AlphabetizeElementChildren
+* AlphabetizeElementChildren alphabetizes all the child elements inside of a particular element. The **whereExpression** parameter determines what element(s) children you want alphabetized.
+```C#
+var xml = "<shelf>" +
+"<book><title>Test Book 1</title><author>Judy Blume</author><copyright>2016</copyright></book>" +
+"<book><title>Test Book 2</title><copyright>2002</copyright><author>John Doe</author></book>" +
+"<book><copyright>2014</copyright><title>Test Book 3</title><author>Tom Clancy</author></book>" +
+"</shelf>";
+
+var xmlDocument = new XmlDocument();
+xmlDocument.LoadXml(xml);
+
+xmlDocument.AlphabetizeElementChildren(x => x.Name.Equals("book"));
 ```
