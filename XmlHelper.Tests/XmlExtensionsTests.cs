@@ -89,6 +89,34 @@ namespace XmlHelper.Tests
         }
 
         [TestMethod]
+        public void FindElementsByAttributeValue_Elements_Returned_By_Attribute_Where_Clause()
+        {
+            var xmlRequestInput =
+                "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\"><city>Plymouth</city><country>!*)</country></stop>" +
+                "</route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city></stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlRequestInput);
+
+            var elementsFound = xmlDoc.FindElementsByAttributes(x => x.Name.ToLower().Equals("stopid") && x.InnerText.Equals("2"));
+
+            Assert.IsTrue(elementsFound.Any());
+        }
+
+        [TestMethod]
+        public void FindElementsByAttributeValue_No_Elements_Returned_By_Attribute_Where_Clause()
+        {
+            var xmlRequestInput =
+                "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\"><city>Plymouth</city><country>!*)</country></stop>" +
+                "</route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city></stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlRequestInput);
+
+            var elementsFound = xmlDoc.FindElementsByAttributes(x => x.Name.ToLower().Equals("stopid") && x.InnerText.Equals("3"));
+
+            Assert.IsFalse(elementsFound.Any());
+        }
+
+        [TestMethod]
         public void FindElements_Find_Elements_By_Specific_Where_Clause()
         {
             var xmlRequestInput =

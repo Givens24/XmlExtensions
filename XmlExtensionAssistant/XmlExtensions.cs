@@ -8,7 +8,7 @@ namespace XmlExtensionAssistant
     public static class XmlExtensions
     {
         /// <summary>
-        /// Walks all the child nodes of the given root node in an XML strucuture and performs the specified action against each node
+        /// Walks all the child nodes of the given root node in an XML structure and performs the specified action against each node
         /// </summary>
         /// <param name="rootXmlNode">XML root node to walk down</param>
         /// <param name="action">Method to perfom against each XML node</param>
@@ -51,10 +51,33 @@ namespace XmlExtensionAssistant
             var foundXmlNodes = new List<XmlNode>();
             xmlDocument.FirstChild.ParentNode.TraverseXml(x =>
             {
-                var foundAttribute =
-                    x.Attributes?.Cast<XmlAttribute>()
-                        .FirstOrDefault(
-                            attribute => attribute.Name.Equals(attributeName) && attribute.InnerText == attributeValue);
+                var foundAttribute = x.Attributes?.Cast<XmlAttribute>()
+                                                  .FirstOrDefault(attribute => attribute.Name.Equals(attributeName) && 
+                                                   attribute.InnerText == attributeValue);
+                if (foundAttribute == null)
+                {
+                    return;
+                }
+
+                foundXmlNodes.Add(x);
+            });
+
+            return foundXmlNodes;
+        }
+
+        /// <summary>
+        /// Finds all nodes in an xml based on the specified attribute where clause
+        /// </summary>
+        /// <param name="xmlDocument">Xml document to search</param>
+        /// <param name="whereExression">Where expression to search nodes on</param>
+        /// <returns>A collection of xml nodes</returns>
+        public static IEnumerable<XmlNode> FindElementsByAttributes(this XmlDocument xmlDocument, Func<XmlAttribute, bool> whereExpression)
+        {
+            var foundXmlNodes = new List<XmlNode>();
+            xmlDocument.FirstChild.ParentNode.TraverseXml(x =>
+            {
+                var foundAttribute = x.Attributes?.Cast<XmlAttribute>()
+                                                  .FirstOrDefault(whereExpression);
                 if (foundAttribute == null)
                 {
                     return;
