@@ -2,7 +2,7 @@
 
 # Setup and Usage for XmlExtensions
 * All you need to do in order to use the extensions is reference the **XmlExtensionAssistant** dll (which you can download through nuget) and create an instance of an XmlDocument to extend on. The only method that does not extend on the Xmldocument object is **"TraverseXml"**. This method is an extension for **XmlNode**.
-* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"**, **"Flatten"** and **"AlphabetizeElementChildren"**.
+* The XmlExtensions library contains 4 methods that include **"TraverseXml"**, **"FindElements"**, **"FindElementsByAttributeValue"**, **"FindElementsByAttributes"**, **"RemoveElements"**, **"Flatten"** and **"AlphabetizeElementChildren"**.
 * The following examples bellow will demonstrate how to call each of the four methods above.
 
 ## TraverseXml
@@ -23,7 +23,7 @@ xmlDoc.FirstChild.TraverseXml(x =>
 ```
 
 ## FindElements
-* FindElements will return a collection of Xml nodes based on the where clause parameter that is passed in. The where class is a Func<XmlNode, bool>.
+* FindElements will return a collection of Xml nodes based on the where clause parameter that is passed in. The where class is a ```Func<XmlNode, bool>```.
 ```C#
 var xmlRequestInput = "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\">" +<city>Plymouth</city><country>!*)</country></stop></route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city>" +</stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
 
@@ -44,6 +44,28 @@ xmlDoc.LoadXml(xmlRequestInput);
 var elementsFound = xmlDoc.FindElementsByAttributeValue("stopid", "2");
 ```
 
+## FindElementsByAttributes
+* FindElementsByAttributes will return a collection of Xml nodes that meet the attribute where clause that is passed in. The where clause is a ```Func<XmlAttribute, bool>```.
+```C#
+var xmlRequestInput = "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\">" +<city>Plymouth</city><country>!*)</country></stop></route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city>" +</stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
+
+var xmlDoc = new XmlDocument();
+xmlDoc.LoadXml(xmlRequestInput);
+
+var elementsFound = xmlDoc.FindElementsByAttributes(x => x.Name.ToLower().Equals("stopid") && x.InnerText.Equals("2"));
+```
+
+## RemoveElements
+* RemoveElements removes xml elements from an Xml document based on the where clause parameter passed in. The where clause is a ```Func<XmlNode, bool>```.
+```C#
+var xmlRequestInput = "<trip><route number=\"1\"><stop stopid=\"1\"><city>Apple Valley</city></stop><stop stopid=\"2\">" +<city>Plymouth</city><country>!*)</country></stop></route><route number=\"2\"><stop stopid=\"1\"><city>St. Paul</city>" +</stop><stop stopid=\"2\"><city>St. Cloud</city><country>US</country></stop></route></trip>";
+
+var xmlDoc = new XmlDocument();
+xmlDoc.LoadXml(xmlRequestInput);
+
+xmlDoc.RemoveElements(x => x.Name.ToLower().Equals("city") && x.InnerText.ToLower().Equals("plymouth"));
+```
+
 ## Flatten
 * Flatten returns a collection of Xml nodes in the entire XmlDocument.
 ```C#
@@ -56,7 +78,7 @@ var allXmlNodesFlattened = xmlDoc.Flatten();
 ```
 
 ## AlphabetizeElementChildren
-* AlphabetizeElementChildren alphabetizes all the child elements inside of a particular element. The **whereExpression** parameter determines what element(s) children you want alphabetized.
+* AlphabetizeElementChildren alphabetizes all the child elements inside of a particular element. The **whereExpression** parameter determines what element's children you want alphabetized.
 ```C#
 var xml = "<shelf>" +
 "<book><title>Test Book 1</title><author>Judy Blume</author><copyright>2016</copyright></book>" +
